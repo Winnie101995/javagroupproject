@@ -7,7 +7,7 @@ public abstract class Asteroids extends GameCharacters{
     private double rotationalMovement;
 //    private double movementSpeed;
     private Group parentGroup;
-
+//hello
     public Asteroids(int x, int y, int size){
         super(new PolygonShape().createPolygonShape(size), x, y);
         this.getGameCharacter().setStroke(Color.WHITE);
