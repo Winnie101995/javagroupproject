@@ -7,4 +7,6 @@ module application.asteroidsgameproject {
 
     opens application.asteroidsgameproject to javafx.fxml;
     exports application.asteroidsgameproject;
+    exports highscore;
+    opens highscore to javafx.fxml;
 }
