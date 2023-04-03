@@ -27,7 +27,7 @@ public class AsteroidsGame extends Application {
 
     @Override
     public void start(Stage mainStage) throws IOException {
-
+//test
 
        // Get the dimensions of the primary screen
             Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
