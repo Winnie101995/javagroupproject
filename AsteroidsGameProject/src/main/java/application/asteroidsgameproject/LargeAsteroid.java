@@ -26,10 +26,12 @@ public class LargeAsteroid extends Asteroids {
         double x = getGameCharacter().getTranslateX();
         double y = getGameCharacter().getTranslateY();
 
-        MediumAsteroid asteroid1 = new MediumAsteroid((int) x, (int) y);
-        MediumAsteroid asteroid2 = new MediumAsteroid((int) x, (int) y);
-
-        getParentGroup().getChildren().addAll(asteroid1.getGameCharacter(), asteroid2.getGameCharacter());
+        MediumAsteroid asteroid1 = new MediumAsteroid((int)x - 5, (int)y + 5);
+        MediumAsteroid asteroid2 = new MediumAsteroid((int)x + 5, (int)y - 5);
+//        getParentGroup().getChildren().addAll(asteroid1.getGameCharacter(), asteroid2.getGameCharacter());
+        System.out.println("Asteroid 1 at (" + asteroid1.getGameCharacter().getTranslateX() + ", " + asteroid1.getGameCharacter().getTranslateY() + ")");
+        System.out.println("Asteroid 2 at (" + asteroid2.getGameCharacter().getTranslateX() + ", " + asteroid2.getGameCharacter().getTranslateY() + ")");
+        System.out.println("large asteoid at (" + this.getGameCharacter().getTranslateX() + ", " + this.getGameCharacter().getTranslateY() + ")");
 
         asteroid1.accelerate(1.0);
         asteroid2.accelerate(1.0);

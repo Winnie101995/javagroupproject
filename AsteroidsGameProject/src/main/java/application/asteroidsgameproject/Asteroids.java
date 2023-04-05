@@ -1,4 +1,5 @@
 package application.asteroidsgameproject;
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import java.util.Random;
@@ -6,9 +7,8 @@ import java.util.Random;
 public abstract class Asteroids extends GameCharacters{
     private double rotationalMovement;
 //    private double movementSpeed;
-    private Group parentGroup;
-//hello
-    //ddddd
+private Group parentGroup = new Group(); // initialize parentGroup
+
     public Asteroids(int x, int y, int size){
         super(new PolygonShape().createPolygonShape(size), x, y);
         this.getGameCharacter().setStroke(Color.WHITE);
@@ -35,8 +35,17 @@ public abstract class Asteroids extends GameCharacters{
         return parentGroup;
     }
 
+//    public Bounds getBoundsInParent() {
+//        return getGameCharacter().getBoundsInParent();
+//    }
+
     public void destroy(){
         this.getGameCharacter().setVisible(false);
+        getParentGroup().getChildren().remove(this.getGameCharacter()); // remove the large asteroid
+
 
     }
+
+
+
 }

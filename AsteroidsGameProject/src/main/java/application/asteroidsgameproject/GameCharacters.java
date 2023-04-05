@@ -97,15 +97,6 @@ public abstract class GameCharacters {
 
         this.movement = this.movement.add(changeX, changeY);
     }
-////vlecityy
-//public void setVelocityX(double velocityX) {
-//    this.velocityX = velocityX;
-//}
-//
-//    public void setVelocityY(double velocityX) {
-//        this.velocityY = velocityY;
-//    }
-
 
     //    checking for colloision
     public boolean collision(GameCharacters other){

@@ -17,6 +17,7 @@ public class PolygonShape {
         double s1 = Math.sin(Math.PI * 2 / 5);
         double s2 = Math.sin(Math.PI * 4 / 5);
 
+
         polygon.getPoints().addAll(
                 size, 0.0,
                 size * c1, -1 * size * s1,

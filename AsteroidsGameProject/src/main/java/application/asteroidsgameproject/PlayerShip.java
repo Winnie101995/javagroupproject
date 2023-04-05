@@ -13,8 +13,10 @@ public class PlayerShip extends GameCharacters {
 
     public void hyperJump(){
 //        get the current location
-        double current_x_location = this.getGameCharacter().getTranslateX();
-        double current_y_location = this.getGameCharacter().getTranslateY();
+//        double current_x_location = this.getGameCharacter().getTranslateX();
+//        double current_y_location = this.getGameCharacter().getTranslateY();
+
+//        get current location of o
 //     remove the space space from current location
         this.getGameCharacter().setTranslateX(-1000);
         this.getGameCharacter().setTranslateY(-1000);
@@ -27,8 +29,4 @@ public class PlayerShip extends GameCharacters {
         this.getGameCharacter().setTranslateY(newRandY);
     }
 
-
-    public void halt(){
-
-    }
 }
