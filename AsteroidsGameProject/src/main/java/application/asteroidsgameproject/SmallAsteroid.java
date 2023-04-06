@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 
 public class SmallAsteroid extends Asteroids{
-    private static final int ASTEROID_SIZE = 10;
+    private static final int ASTEROID_SIZE = 20;
     public SmallAsteroid(int x, int y){
         super(x, y, ASTEROID_SIZE);
         this.getGameCharacter().setFill(Color.GREY);
@@ -16,14 +16,12 @@ public class SmallAsteroid extends Asteroids{
         Random random = new Random();
         this.getGameCharacter().setRotate(random.nextInt(360));
 
-        for (int i = 0; i < 5; i++) {
-            accelerate(0.6);
-        }
+        this.accelerate(3.5);
 
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-    }
+//    @Override
+//    public void destroy() {
+//        super.destroy();
+//    }
 }

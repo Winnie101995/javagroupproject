@@ -4,19 +4,16 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 
@@ -57,14 +54,16 @@ public class AsteroidsGame extends Application {
             Random rnd = new Random();
 // Generate a the first large asteroids
             LargeAsteroid asteroid_one = new LargeAsteroid(rnd.nextInt(WIDTH), rnd.nextInt(HEIGHT));
-            asteroids.add(asteroid_one);
+
+        asteroids.add(asteroid_one);
 //            generating a list of collided or hit asteroids
-        ArrayList<Asteroids> collidedListAsteroids = new ArrayList<>();
 //           list of bullests
         ArrayList<Bullet> bulletList = new ArrayList<>();
+//level
 //        add player
         root.getChildren().add(playership.getGameCharacter());
 //        add asteroids
+
         asteroids.forEach(asteroid -> root.getChildren().add(asteroid.getGameCharacter()));
 
         // handles continuous inputs (as long as key is pressed)
@@ -98,6 +97,7 @@ public class AsteroidsGame extends Application {
 
             @Override
             public void handle(long now) {
+
                 if (keyPressedList.contains("LEFT")) {
                     playership.turnLeft();
                 }
@@ -139,44 +139,92 @@ public class AsteroidsGame extends Application {
 // getting the bullets from the bullet list ensuring they don't stay more than 5 seconds on the screen
 
                 for (int n = 0; n < bulletList.size(); n++) {
-
                     Bullet bullet = bulletList.get(n);
                     bullet.move();
                     bullet.update(1 / 60.0);
-
                     if (bullet.elapseTimeSeconds > 2) {
                         bulletList.remove(n);
                         root.getChildren().remove(bullet.getGameCharacter());
                     }
                 }
 
-
 //               collision detection
-                // loop over each asteroid
-                asteroids.forEach(asteroid -> {
-                    // check collision with each bullet
-                    bulletList.forEach(bullet -> {
-                        if (bullet.collision(asteroid)){
-                            ;
-                            // bullet has hit asteroid
-                            if (asteroid instanceof LargeAsteroid) {
-                                asteroid.destroy();
-                            } else if (asteroid instanceof MediumAsteroid) {
-                                asteroid.destroy();
-                            } else if (asteroid instanceof SmallAsteroid) {
-                                asteroid.destroy();
+
+                // disappear bullet when it hit
+                List<Bullet> bulletToRemove = bulletList.stream().filter(bullet -> {
+                    List<Asteroids> collisions = asteroids.stream()
+                            .filter(asteroid -> asteroid.collision(bullet))
+                            .collect(Collectors.toList());
+
+                    if(collisions.isEmpty()){
+                        return false;
+                    }
+
+                    collisions.stream().forEach(collided -> {
+                        asteroids.remove(collided);
+                        root.getChildren().remove(collided.getGameCharacter());
+
+                        if (collided instanceof LargeAsteroid) {
+                            for (int i = 0; i < 2; i++) {
+                                MediumAsteroid asteroidM = new MediumAsteroid((int) collided.getGameCharacter().getTranslateX(), (int) collided.getGameCharacter().getTranslateY());
+                                asteroids.add(asteroidM);
+                                root.getChildren().add(asteroidM.getGameCharacter());
+                                asteroids.forEach(asteroid -> asteroid.move());
+
                             }
-                        };
+                        } else if (collided instanceof MediumAsteroid) {
+                            for (int i = 0; i < 2; i++) {
+                                SmallAsteroid asteroidS = new SmallAsteroid((int) collided.getGameCharacter().getTranslateX(), (int) collided.getGameCharacter().getTranslateY());
+                                asteroids.add(asteroidS);
+                                root.getChildren().add(asteroidS.getGameCharacter());
+                                asteroids.forEach(asteroid -> asteroid.move());
+
+                            }
+                        } else if (collided instanceof SmallAsteroid) {
+                            asteroids.remove(collided);
+                        }
+
+                        asteroids.forEach(asteroid -> asteroid.move());
                     });
-                 });
-//checking if player collides with asteroid
-                asteroids.forEach(asteroid -> {
-                    if (playership.collision(asteroid)) {
-//                        stop();
+
+                    return true;
+                }).collect(Collectors.toList());
+
+
+                bulletToRemove.forEach(bullet -> {
+                    root.getChildren().remove(bullet.getGameCharacter());
+                    bulletList.remove(bullet);
+                    // Create a variable to keep track of the current level
+
+// Check if there are any asteroids left on the screen
+                    int level = 1;
+
+                    if (asteroids.isEmpty()) {
+                        // Increase the level and add more large asteroids
+                        level++;
+                        for (int i = 0; i < level; i++) {
+//        generating a random position to the
+                            Random rnd = new Random();
+// Generate a the first large asteroids
+                            LargeAsteroid asteroid_to_add = new LargeAsteroid(rnd.nextInt(WIDTH), rnd.nextInt(HEIGHT));
+                            asteroids.add(asteroid_to_add);
+                            root.getChildren().add(asteroid_to_add.getGameCharacter());
+                            asteroids.forEach(asteroid -> asteroid.move());
+                        }
                     }
 
 
                 });
+
+//checking if player collides with asteroid
+                asteroids.forEach(asteroid -> {
+                    if (playership.collision(asteroid)) {
+//                        stop();
+                        System.out.println("You die!");
+                    }
+
+                });
+
 
 
             }

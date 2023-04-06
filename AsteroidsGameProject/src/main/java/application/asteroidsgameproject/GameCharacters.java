@@ -24,6 +24,8 @@ public abstract class GameCharacters {
         return this.movement;
 
     }
+
+//    initilising a GameCharacter
     public GameCharacters(Polygon polygon, int x, int y) {
         this.gamecharacter = polygon;
         this.gamecharacter.setTranslateX(x);

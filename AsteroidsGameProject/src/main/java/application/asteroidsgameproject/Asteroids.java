@@ -16,12 +16,6 @@ private Group parentGroup = new Group(); // initialize parentGroup
 
         Random generaterandom = new Random();
         super.getGameCharacter().setRotate(generaterandom.nextInt(360));
-//        int accelerationAmount = 1 + generaterandom.nextInt(10);
-//
-//        for (int i = 0; i < accelerationAmount; i++) {
-//            accelerate();
-//        }
-
         this.rotationalMovement = 0.5 - generaterandom.nextDouble();
     }
 
@@ -39,12 +33,9 @@ private Group parentGroup = new Group(); // initialize parentGroup
 //        return getGameCharacter().getBoundsInParent();
 //    }
 
-    public void destroy(){
-        this.getGameCharacter().setVisible(false);
-        getParentGroup().getChildren().remove(this.getGameCharacter()); // remove the large asteroid
 
+//    removing the asteroid from the screen: destroying the asteriod -> every size asteroid implements it's own implementation
 
-    }
 
 
 

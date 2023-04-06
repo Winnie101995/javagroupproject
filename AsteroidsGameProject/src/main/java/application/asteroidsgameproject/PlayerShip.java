@@ -6,8 +6,9 @@ import java.util.Random;
 public class PlayerShip extends GameCharacters {
     public PlayerShip(int x, int y) {
 
-        super(new Polygon(-5, -5, 10, 0, -5, 5), x, y);
+        super(new Polygon(15.0, 0.0, -15.0, 10.0, -5.0, 0.0, -15.0, -10.0), x, y);
         this.getGameCharacter().setFill(Color.BLUE);
+        this.getGameCharacter().setOpacity(1);
 
     }
 
