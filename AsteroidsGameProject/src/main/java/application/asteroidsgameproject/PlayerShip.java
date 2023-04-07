@@ -4,31 +4,31 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 
 public class PlayerShip extends GameCharacters {
+    //    PlayerShip constructor
     public PlayerShip(int x, int y) {
 
-        super(new Polygon(-5, -5, 10, 0, -5, 5), x, y);
+        super(new Polygon(15.0, 0.0, -15.0, 10.0, -5.0, 0.0, -15.0, -10.0), x, y);
         this.getGameCharacter().setFill(Color.BLUE);
+        this.getGameCharacter().setOpacity(1);
 
     }
 
-    public void hyperJump(){
-//        get the current location
+//    method that implements hyperJump mechanism movement.
+
+    public void hyperJump() {
+        // Get the current location of the game character
         double current_x_location = this.getGameCharacter().getTranslateX();
         double current_y_location = this.getGameCharacter().getTranslateY();
-//     remove the space space from current location
-        this.getGameCharacter().setTranslateX(-1000);
-        this.getGameCharacter().setTranslateY(-1000);
 
-//        generate a random location on the screen and move the spaceshap there
 
+        // Generate a new random location for the game character
         double newRandX = Math.random() * AsteroidsGame.WIDTH;
         double newRandY = Math.random() * AsteroidsGame.HEIGHT;
+
+        // Move the game character to the new location
         this.getGameCharacter().setTranslateX(newRandX);
         this.getGameCharacter().setTranslateY(newRandY);
-    }
 
-
-    public void halt(){
 
     }
 }
