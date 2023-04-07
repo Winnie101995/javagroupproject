@@ -3,16 +3,12 @@ import javafx.scene.shape.Polygon;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Shape;
 
+//absract class that every cgame character will in herit from
 public abstract class GameCharacters {
 
     private Polygon gamecharacter;
     private Point2D movement;
     public double elapseTimeSeconds;
-    private double velocityX;
-
-    private double velocityY;
-
-
 
 
     public void setMovement(Point2D newmovement){

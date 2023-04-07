@@ -4,20 +4,14 @@ import javafx.scene.shape.Polygon;
 public class PolygonShape {
     private double size;
 
-
+//creates the asteroid with the size variable
     public Polygon createPolygonShape(double size){
         Random rnd = new Random();
         this.size = size;
 
 
         Polygon polygon = new Polygon();
-//        5 corners of the polygon
-        double c1 = Math.cos(Math.PI * 2 / 5);
-        double c2 = Math.cos(Math.PI / 5);
-        double s1 = Math.sin(Math.PI * 2 / 5);
-        double s2 = Math.sin(Math.PI * 4 / 5);
-
-
+//getting my asteroid shape
         polygon.getPoints().addAll(
                 size * 1.0, size * 1.5,
                 size * 1.68, size * 0.2,
@@ -37,8 +31,3 @@ public class PolygonShape {
     }
 }
 
-//    size, 0.0,
-//                size * c1, -1.5 * size * s1,
-//                -1 * size * c2, -1 * size * s2,
-//                3 * size * c2, size * s2 * -5,
-//                size * c1, size * s1);

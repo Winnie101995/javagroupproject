@@ -3,6 +3,7 @@ import javafx.scene.paint.Color;
 
 import java.util.Random;
 
+//creating large asteroids
 public class LargeAsteroid extends Asteroids {
     private static final int ASTEROID_SIZE = 60;
 

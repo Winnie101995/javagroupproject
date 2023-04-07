@@ -16,18 +16,14 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+//the larger game class
 public class AsteroidsGame extends Application {
     public static int WIDTH;
     public static int HEIGHT;
-
-//    flag to check if a byllet has been fired
- // create parent group
-
+    public static int level = 1;
 
     @Override
     public void start(Stage mainStage) throws IOException {
-//test
        // Get the dimensions of the primary screen
             Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
             WIDTH = (int) primaryScreenBounds.getWidth();
@@ -113,6 +109,12 @@ public class AsteroidsGame extends Application {
 
                 if (keyPressedList.contains("SHIFT")) {
                     playership.hyperJump();
+//checking if player collides with asteroid
+                    asteroids.forEach(asteroid -> {
+                        if (playership.collision(asteroid)) {
+                            playership.hyperJump();
+                        }
+                        });
                 }
 
                 if (keyJustPressedList.contains("SPACE") ) {
@@ -142,7 +144,7 @@ public class AsteroidsGame extends Application {
                     Bullet bullet = bulletList.get(n);
                     bullet.move();
                     bullet.update(1 / 60.0);
-                    if (bullet.elapseTimeSeconds > 2) {
+                    if (bullet.elapseTimeSeconds > 100) {
                         bulletList.remove(n);
                         root.getChildren().remove(bullet.getGameCharacter());
                     }
@@ -197,22 +199,25 @@ public class AsteroidsGame extends Application {
                     // Create a variable to keep track of the current level
 
 // Check if there are any asteroids left on the screen
-                    int level = 1;
 
                     if (asteroids.isEmpty()) {
                         // Increase the level and add more large asteroids
                         level++;
-                        for (int i = 0; i < level; i++) {
-//        generating a random position to the
+                        System.out.print("Level" + level);
+
+
+                        int numLargeAsteroids = (int) Math.ceil(level * 1); // Formula to calculate number of large asteroids
+                        for (int i = 0; i < numLargeAsteroids; i++) {
+                            System.out.println("NUMBER OF ASTEROIDS" + numLargeAsteroids);
+////                            // generating a random position to the
                             Random rnd = new Random();
-// Generate a the first large asteroids
-                            LargeAsteroid asteroid_to_add = new LargeAsteroid(rnd.nextInt(WIDTH), rnd.nextInt(HEIGHT));
-                            asteroids.add(asteroid_to_add);
-                            root.getChildren().add(asteroid_to_add.getGameCharacter());
+//                            // Generate a the first large asteroids
+                            LargeAsteroid asteroid_to_add_next_level = new LargeAsteroid(rnd.nextInt(WIDTH), rnd.nextInt(HEIGHT));
+                            asteroids.add(asteroid_to_add_next_level);
+                            root.getChildren().add(asteroid_to_add_next_level.getGameCharacter());
                             asteroids.forEach(asteroid -> asteroid.move());
                         }
                     }
-
 
                 });
 
@@ -220,7 +225,7 @@ public class AsteroidsGame extends Application {
                 asteroids.forEach(asteroid -> {
                     if (playership.collision(asteroid)) {
 //                        stop();
-                        System.out.println("You die!");
+//                        System.out.println("You die!");
                     }
 
                 });
