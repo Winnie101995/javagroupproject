@@ -13,6 +13,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -42,10 +43,14 @@ public class AsteroidsGame extends Application {
         mainStage.setScene(mainScene);
         mainStage.setTitle("Asteroids Game");
 
+
+
+        // Initialize the score variable
+        AtomicInteger score = new AtomicInteger();
+        Text scoreText = new Text();
         // Create the score and lives text nodes
         root.setStyle("-fx-background-color: black;");
-
-        Text scoreText = new Text("\nScore: 0");
+        scoreText.setText("\nScore: " + score);
         Text livesText = new Text("\nLives: ❤️ ❤️ ❤️");
         scoreText.setFill(Color.WHITE);
         livesText.setFill(Color.WHITE);
@@ -182,29 +187,37 @@ public class AsteroidsGame extends Application {
                         asteroids.remove(collided);
                         root.getChildren().remove(collided.getGameCharacter());
 
+
+//
                         if (collided instanceof LargeAsteroid) {
                             for (int i = 0; i < 2; i++) {
                                 MediumAsteroid asteroidM = new MediumAsteroid((int) collided.getGameCharacter().getTranslateX(), (int) collided.getGameCharacter().getTranslateY());
                                 asteroids.add(asteroidM);
                                 root.getChildren().add(asteroidM.getGameCharacter());
                                 asteroids.forEach(asteroid -> asteroid.move());
-
+                                score.addAndGet(10);
+//
                             }
+
                         } else if (collided instanceof MediumAsteroid) {
                             for (int i = 0; i < 2; i++) {
                                 SmallAsteroid asteroidS = new SmallAsteroid((int) collided.getGameCharacter().getTranslateX(), (int) collided.getGameCharacter().getTranslateY());
                                 asteroids.add(asteroidS);
                                 root.getChildren().add(asteroidS.getGameCharacter());
                                 asteroids.forEach(asteroid -> asteroid.move());
-
+                                score.addAndGet(25);
+//
                             }
+
+                            //
                         } else if (collided instanceof SmallAsteroid) {
                             asteroids.remove(collided);
+                            score.addAndGet(100);
                         }
 
+                        scoreText.setText("\nScore: " + score);
                         asteroids.forEach(asteroid -> asteroid.move());
                     });
-
                     return true;
                 }).collect(Collectors.toList());
 
