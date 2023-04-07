@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 
 public class PlayerShip extends GameCharacters {
-    //    drawing our ship on the screen
+    //    PlayerShip constructor
     public PlayerShip(int x, int y) {
 
         super(new Polygon(15.0, 0.0, -15.0, 10.0, -5.0, 0.0, -15.0, -10.0), x, y);
@@ -12,6 +12,8 @@ public class PlayerShip extends GameCharacters {
         this.getGameCharacter().setOpacity(1);
 
     }
+
+//    method that implements hyperJump mechanism movement.
 
     public void hyperJump() {
         // Get the current location of the game character

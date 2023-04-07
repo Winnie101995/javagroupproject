@@ -16,11 +16,15 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-//the larger game class
+//the larger game class that extends application
 public class AsteroidsGame extends Application {
+
+//This variables that static means that they can be accessed using the class name rather than through an object of the class.
     public static int WIDTH;
     public static int HEIGHT;
     public static int level = 1;
+    Random rnd = new Random();
+
 
     @Override
     public void start(Stage mainStage) throws IOException {
@@ -39,35 +43,31 @@ public class AsteroidsGame extends Application {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
             GraphicsContext gc = canvas.getGraphicsContext2D();
             root.setCenter(canvas);
-
+//fill screen color
             gc.setFill(Color.BLACK);
             gc.fillRect(0, 0, WIDTH, HEIGHT);
-//playership
+//initialising playership
         PlayerShip playership = new PlayerShip(WIDTH/2, HEIGHT/2);
-//        list of asterioids
-        ArrayList<Asteroids> asteroids = new ArrayList<>();
-//        generating a random position to the
-            Random rnd = new Random();
-// Generate a the first large asteroids
-            LargeAsteroid asteroid_one = new LargeAsteroid(rnd.nextInt(WIDTH), rnd.nextInt(HEIGHT));
-
-        asteroids.add(asteroid_one);
-//            generating a list of collided or hit asteroids
-//           list of bullests
-        ArrayList<Bullet> bulletList = new ArrayList<>();
-//level
-//        add player
+//        add player to game window
         root.getChildren().add(playership.getGameCharacter());
-//        add asteroids
 
+//initialising a list of asterioids
+        ArrayList<Asteroids> asteroids = new ArrayList<>();
+
+//generating a random position to the first large asteroids
+        LargeAsteroid asteroid_one = new LargeAsteroid(rnd.nextInt(WIDTH), rnd.nextInt(HEIGHT));
+//add large asteroid to asteroid list
+        asteroids.add(asteroid_one);
+//        add asteroid to game window
         asteroids.forEach(asteroid -> root.getChildren().add(asteroid.getGameCharacter()));
-
+// initialising a list of bullests
+        ArrayList<Bullet> bulletList = new ArrayList<>();
         // handles continuous inputs (as long as key is pressed)
         ArrayList<String> keyPressedList = new ArrayList<>();
 
         // handles discrete inputs (one per key press)
         ArrayList<String> keyJustPressedList = new ArrayList<>();
-
+//captures the pressed key and adds it to two ArrayLists: "keyPressedList" and "keyJustPressedList".
         mainScene.setOnKeyPressed(
                 (KeyEvent event) -> {
                     String keyName = event.getCode().toString();
@@ -78,7 +78,7 @@ public class AsteroidsGame extends Application {
                     }
                 }
         );
-
+//captures the released key and removes it from the "keyPressedList" ArrayList if it was already in the list.
         mainScene.setOnKeyReleased(
                 (KeyEvent event) -> {
                     String keyName = event.getCode().toString();
@@ -144,14 +144,13 @@ public class AsteroidsGame extends Application {
                     Bullet bullet = bulletList.get(n);
                     bullet.move();
                     bullet.update(1 / 60.0);
-                    if (bullet.elapseTimeSeconds > 100) {
+                    if (bullet.elapseTimeSeconds > 5) {
                         bulletList.remove(n);
                         root.getChildren().remove(bullet.getGameCharacter());
                     }
                 }
 
 //               collision detection
-
                 // disappear bullet when it hit
                 List<Bullet> bulletToRemove = bulletList.stream().filter(bullet -> {
                     List<Asteroids> collisions = asteroids.stream()
@@ -192,11 +191,10 @@ public class AsteroidsGame extends Application {
                     return true;
                 }).collect(Collectors.toList());
 
-
+//remove bullets once they have hit the asteroid
                 bulletToRemove.forEach(bullet -> {
                     root.getChildren().remove(bullet.getGameCharacter());
                     bulletList.remove(bullet);
-                    // Create a variable to keep track of the current level
 
 // Check if there are any asteroids left on the screen
 

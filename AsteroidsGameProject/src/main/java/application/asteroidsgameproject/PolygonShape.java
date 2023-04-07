@@ -2,16 +2,21 @@ package application.asteroidsgameproject;
 import java.util.Random;
 import javafx.scene.shape.Polygon;
 public class PolygonShape {
+
+//    private instance variable for size
     private double size;
 
-//creates the asteroid with the size variable
+
+//Method creates the asteroids with the size variable to specify their size
     public Polygon createPolygonShape(double size){
         Random rnd = new Random();
+
         this.size = size;
 
 
         Polygon polygon = new Polygon();
-//getting my asteroid shape
+//        Method create a new Polygon object named "polygon" and set its points
+//        to create the shape of an asteroid.
         polygon.getPoints().addAll(
                 size * 1.0, size * 1.5,
                 size * 1.68, size * 0.2,
