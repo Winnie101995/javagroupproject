@@ -4,6 +4,7 @@ module application.asteroidsgameproject {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires java.desktop;
 
     opens application.asteroidsgameproject to javafx.fxml;
     exports application.asteroidsgameproject;

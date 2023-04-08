@@ -19,6 +19,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.AudioInputStream;
+import java.io.File;
 
 //the larger game class that extends application
 public class AsteroidsGame extends Application {
@@ -28,7 +34,6 @@ public class AsteroidsGame extends Application {
     public static int HEIGHT;
     public static int level = 1;
     Random rnd = new Random();
-
 
     @Override
     public void start(Stage mainStage) throws IOException {
@@ -72,6 +77,7 @@ public class AsteroidsGame extends Application {
         PlayerShip playership = new PlayerShip(WIDTH/2, HEIGHT/2);
 //        add player to game window
         root.getChildren().add(playership.getGameCharacter());
+
 
 //initialising a list of asterioids
         ArrayList<Asteroids> asteroids = new ArrayList<>();
@@ -141,13 +147,15 @@ public class AsteroidsGame extends Application {
 
                 if (keyJustPressedList.contains("SPACE") ) {
                     // user can fire a bullet
-//                    System.out.println("bullet has been shot");
                     Bullet bullet = new Bullet((int) playership.getGameCharacter().getTranslateX(), (int) playership.getGameCharacter().getTranslateY());
                     bullet.getGameCharacter().setRotate(playership.getGameCharacter().getRotate());
                     bulletList.add(bullet);
 
                     bullet.accelerate(0.3); // sped up bullet speed
                     bullet.setMovement(bullet.getMovement().normalize().multiply(3));
+
+                    // Play the fire sound
+                    playSound("./fire.mp3");
 
                     root.getChildren().add(bullet.getGameCharacter());
 
@@ -269,6 +277,16 @@ public class AsteroidsGame extends Application {
         game.start();
         mainStage.show();
 
+    }
+    private void playSound(String filePath) {
+        try {
+            Clip clip = AudioSystem.getClip();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(filePath));
+            clip.open(inputStream);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
     public static void main(String[] args){
         try {
