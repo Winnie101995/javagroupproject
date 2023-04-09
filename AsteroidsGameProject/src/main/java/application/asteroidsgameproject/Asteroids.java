@@ -27,7 +27,4 @@ public abstract class Asteroids extends GameCharacters{
         super.move();
         super.getGameCharacter().setRotate(super.getGameCharacter().getRotate() + rotationalMovement);
     }
-
-
-
 }

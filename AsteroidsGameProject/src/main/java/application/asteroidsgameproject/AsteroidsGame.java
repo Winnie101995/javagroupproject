@@ -35,6 +35,16 @@ public class AsteroidsGame extends Application {
     public static int level = 1;
     Random rnd = new Random();
 
+    // collision related tests variable
+    private boolean hyperJumpPressed = false;
+
+
+    private void updateGameObjectsList(List<GameCharacters> gameObjects, AlienShip alienShip, List<Asteroids> asteroids) {
+        gameObjects.clear();
+        gameObjects.add(alienShip);
+        gameObjects.addAll(asteroids);
+    }
+
     @Override
     public void start(Stage mainStage) throws IOException {
         // Get the dimensions of the primary screen
@@ -47,7 +57,6 @@ public class AsteroidsGame extends Application {
         Scene mainScene = new Scene(root);
         mainStage.setScene(mainScene);
         mainStage.setTitle("Asteroids Game");
-
 
 
         // Initialize the score variable
@@ -82,8 +91,14 @@ public class AsteroidsGame extends Application {
         AlienShip alienShip = new AlienShip (50, 50);
         root.getChildren().add(alienShip.getGameCharacter());
 
-//initialising a list of asterioids
+//initialising a list of asteroids
         ArrayList<Asteroids> asteroids = new ArrayList<>();
+
+//  this list relates to the hyperjumping testing
+        List<GameCharacters> gameObjects = new ArrayList<>();
+        gameObjects.add(alienShip);
+        gameObjects.addAll(asteroids);
+// need to test whether this updates / deletes the lists
 
 //generating a random position to the first large asteroids
         LargeAsteroid asteroid_one = new LargeAsteroid(rnd.nextInt(WIDTH), rnd.nextInt(HEIGHT));
@@ -138,15 +153,21 @@ public class AsteroidsGame extends Application {
                     playership.accelerate(0.07);
                 }
 
-                if (keyPressedList.contains("SHIFT")) {
-                    playership.hyperJump();
-//checking if player collides with asteroid
-                    asteroids.forEach(asteroid -> {
-                        if (playership.collision(asteroid)) {
-                            playership.hyperJump();
-                        }
-                    });
+                if (keyPressedList.contains("SHIFT") && !hyperJumpPressed) {
+                    hyperJumpPressed = true;
+                    playership.hyperJump(gameObjects);
+                } else if (!keyPressedList.contains("SHIFT")) {
+                    hyperJumpPressed = false;
                 }
+
+                //checking if player collides with asteroid
+                // @Paul - lets discuss (w/ David) re lives if here is the place to implement negative counter and that this could work with your life recording methods.
+                asteroids.forEach(asteroid -> {
+                    if (playership.collision(asteroid)) {
+                        playership.hyperJump(gameObjects);
+                    }
+                });
+
 
                 if (keyJustPressedList.contains("SPACE") ) {
                     // user can fire a bullet
@@ -198,13 +219,13 @@ public class AsteroidsGame extends Application {
                         asteroids.remove(collided);
                         root.getChildren().remove(collided.getGameCharacter());
 
-
-//
                         if (collided instanceof LargeAsteroid) {
                             for (int i = 0; i < 2; i++) {
                                 MediumAsteroid asteroidM = new MediumAsteroid((int) collided.getGameCharacter().getTranslateX(), (int) collided.getGameCharacter().getTranslateY());
                                 asteroids.add(asteroidM);
                                 root.getChildren().add(asteroidM.getGameCharacter());
+                                //  updating the collision list on every change for objects on the screen which are not the player
+                                updateGameObjectsList(gameObjects, alienShip, asteroids);
                                 asteroids.forEach(asteroid -> asteroid.move());
                                 score.addAndGet(10);
 //
@@ -215,6 +236,7 @@ public class AsteroidsGame extends Application {
                                 SmallAsteroid asteroidS = new SmallAsteroid((int) collided.getGameCharacter().getTranslateX(), (int) collided.getGameCharacter().getTranslateY());
                                 asteroids.add(asteroidS);
                                 root.getChildren().add(asteroidS.getGameCharacter());
+                                updateGameObjectsList(gameObjects, alienShip, asteroids);
                                 asteroids.forEach(asteroid -> asteroid.move());
                                 score.addAndGet(25);
 //
@@ -223,6 +245,7 @@ public class AsteroidsGame extends Application {
                             //
                         } else if (collided instanceof SmallAsteroid) {
                             asteroids.remove(collided);
+                            updateGameObjectsList(gameObjects, alienShip, asteroids);
                             score.addAndGet(100);
                         }
 
