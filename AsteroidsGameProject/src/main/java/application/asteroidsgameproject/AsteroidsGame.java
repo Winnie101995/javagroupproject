@@ -78,6 +78,9 @@ public class AsteroidsGame extends Application {
 //        add player to game window
         root.getChildren().add(playership.getGameCharacter());
 
+//initialising alien ship
+        AlienShip alienShip = new AlienShip (50, 50);
+        root.getChildren().add(alienShip.getGameCharacter());
 
 //initialising a list of asterioids
         ArrayList<Asteroids> asteroids = new ArrayList<>();
