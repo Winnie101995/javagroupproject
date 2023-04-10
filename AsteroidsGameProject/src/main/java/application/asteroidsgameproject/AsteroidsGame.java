@@ -1,6 +1,9 @@
 package application.asteroidsgameproject;
 
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -19,6 +22,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import javafx.geometry.Point2D;
+
+
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
@@ -37,6 +44,12 @@ public class AsteroidsGame extends Application {
 
     // collision related tests variable
     private boolean hyperJumpPressed = false;
+    private AlienShip alienShip;
+    private ArrayList<Bullet> alienBulletList = new ArrayList<>();
+    private int alienShipSpawnCounter = 0;
+    private int alienShipSpawnThreshold = 1;
+    private Timeline alienBulletTimeline;
+
 
 
     private void updateGameObjectsList(List<GameCharacters> gameObjects, AlienShip alienShip, List<Asteroids> asteroids) {
@@ -44,6 +57,28 @@ public class AsteroidsGame extends Application {
         gameObjects.add(alienShip);
         gameObjects.addAll(asteroids);
     }
+
+    private void startAlienShip() {
+        if (alienShip == null) {
+            alienShip = new AlienShip(0, rnd.nextInt(HEIGHT));
+            alienShip.setVelocity(new Point2D(rnd.nextDouble() * 3 + 1, (rnd.nextDouble() - 0.5) * 3));
+            alienShip.setBoundToScreen(false);
+            root.getChildren().add(alienShip.getGameCharacter());
+            gameObjects.add(alienShip);
+
+            // Schedule alien bullets
+            alienBulletTimeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+                Bullet alienBullet = alienShip.createAlienBullet(
+                        playership.getTranslateX(), playership.getTranslateY()
+                );
+                alienBullets.add(alienBullet);
+                root.getChildren().add(alienBullet.getGameCharacter());
+            }));
+            alienBulletTimeline.setCycleCount(Animation.INDEFINITE);
+            alienBulletTimeline.play();
+        }
+    }
+
 
     @Override
     public void start(Stage mainStage) throws IOException {
@@ -167,6 +202,39 @@ public class AsteroidsGame extends Application {
                         playership.hyperJump(gameObjects);
                     }
                 });
+
+                //  spawning in the alien ship section
+                alienShipSpawnCounter++;
+                if (alienShipSpawnCounter <= alienShipSpawnThreshold) {
+                    // Spawn the alien ship
+                    alienShip = new AlienShip(0, rnd.nextInt(600));
+                    root.getChildren().add(alienShip.getGameCharacter());
+
+                    // Reset the counter
+                    alienShipSpawnCounter = 0;
+                }
+
+                if (alienShip != null) {
+                    // Move the alien ship
+                    alienShip.move();
+
+                    // Make the alien ship shoot bullets if it should shoot
+                    if (alienShip.shouldShoot()) {
+                        Bullet alienBullet = alienShip.shootBullet(playership.getGameCharacter().getTranslateX(), playership.getGameCharacter().getTranslateY());
+                        alienBulletList.add(alienBullet);
+                        root.getChildren().add(alienBullet.getGameCharacter());
+                    }
+                }
+
+                for (Bullet alienBullet : alienBullets) {
+                    if (playership.collidesWith(alienBullet)) {
+                        alienBulletsToRemove.add(alienBullet);
+                        // @Paul / @Liu - how are you tracking lives? I need to add a counter here to reduce lives.
+                        playership.hyperJump(gameObjects);
+                    }
+                }
+                //  responsible for removing all bullets in the alienBulletsToRemove list from the alienBullets list. Bullets which have collided with the player's ship needed to be removed from the game.
+                alienBullets.removeAll(alienBulletsToRemove);
 
 
                 if (keyJustPressedList.contains("SPACE") ) {

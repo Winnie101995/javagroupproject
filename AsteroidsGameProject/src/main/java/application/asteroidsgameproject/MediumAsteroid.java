@@ -18,7 +18,7 @@ public class MediumAsteroid extends Asteroids{
         //sets orientation and direction of the asteroid
         Random rnd= new Random();
         this.getGameCharacter().setRotate(rnd.nextInt(360));
-//        creating the accelation / speed
+//        creating the acceleration / speed
         this.accelerate(2.5);
 
     }
