@@ -61,8 +61,13 @@ public class AsteroidsGame extends Application {
         livesText.setFill(Color.WHITE);
         scoreText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         livesText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+
+        Text levelText = new Text("\nLevel: " + level);
+        levelText.setFill(Color.WHITE);
+        levelText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+
         VBox topBox = new VBox();
-        topBox.getChildren().addAll(scoreText, livesText);
+        topBox.getChildren().addAll(scoreText, livesText, levelText);
         root.setTop(topBox);
         livesText.setLayoutY(AsteroidsGame.HEIGHT - 50);
 
@@ -239,6 +244,9 @@ public class AsteroidsGame extends Application {
                     if (asteroids.isEmpty()) {
                         // Increase the level and add more large asteroids
                         level++;
+
+                        levelText.setText("\nLevel: " + level);
+
                         System.out.print("Level" + level);
 
 
