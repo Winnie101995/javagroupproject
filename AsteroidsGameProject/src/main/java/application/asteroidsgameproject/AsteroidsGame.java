@@ -276,7 +276,7 @@ public class AsteroidsGame extends Application {
                         } else if (collided instanceof SmallAsteroid) {
                             asteroids.remove(collided);
                             updateGameObjectsList(gameObjects, alienShip, asteroids);
-                            score.addAndGet(10000);
+                            score.addAndGet(100);
                         }
 
                         scoreText.setText("\nScore: " + score);
