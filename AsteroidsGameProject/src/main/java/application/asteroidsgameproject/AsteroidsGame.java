@@ -92,25 +92,6 @@ public class AsteroidsGame extends Application {
 //        add player to game window
         root.getChildren().add(playership.getGameCharacter());
 
-//initialising alien ship
-//        AlienShip alienShip = new AlienShip (rnd.nextInt(WIDTH), rnd.nextInt(HEIGHT));
-//        root.getChildren().add(alienShip.getGameCharacter());
-
-
-
-// related to alien ship implementation
-//        int frameCounter = 0;
-//        final Point2D alienShipVelocity = new Point2D(5, 0);
-
-// move the alien ship horizontally across the screen
-//        AnimationTimer alienShipMovement = new AnimationTimer() {
-//            @Override
-//            public void handle(long now) {
-//                alienShipVelocity = alienShipVelocity.normalize().multiply(5);
-//                alienShip.move();
-//            }
-//        };
-//        alienShipMovement.start();
 
 
 
@@ -205,7 +186,7 @@ public class AsteroidsGame extends Application {
                     }
                 });
 
-
+// DAVID WIP - THINK I MIGHT NEED TO REMOVE THE ALIENSHIP FROM THIS LIST AS WELL ONCE THE BULLET HITS. THINK TWO LISTS MIGHT BE CAUSING THE ISSUES
 
 // Spawn the alien ship if the score is divisible by 10 and there are no other alien ships present
                 if (score.get() > 0 && score.get() % 10 == 0 && !alienShipPresent) {
@@ -359,18 +340,20 @@ public class AsteroidsGame extends Application {
                         return false;
                     }
 
-                    alienShipCollisions.stream().forEach(collided -> {
-                        alienShips.remove(alienShipCollisions);
-                        root.getChildren().remove(alienShipCollisions);
-
-                        if (alienShipCollisions instanceof AlienShip) {
-                            alienShipCollisions.remove(collided);
-                            score.addAndGet(300);
-                        }
-                        scoreText.setText("\nScore: " + score);
-                    });
+                    AlienShip collidedAlienShip = alienShipCollisions.get(0);
+                    root.getChildren().remove(collidedAlienShip.getGameCharacter());
+                    alienShips.remove(collidedAlienShip);
+                    score.addAndGet(300);
+                    scoreText.setText("\nScore: " + score);
                     return true;
                 }).collect(Collectors.toList());
+
+//remove bullets once they have hit the alien ship
+                bulletToRemove2.forEach(bullet2 -> {
+                    root.getChildren().remove(bullet2.getGameCharacter());
+                    bulletList.remove(bullet2);
+                });
+
 
 //remove bullets once they have hit the alien ship
                 bulletToRemove2.forEach(bullet2 -> {
