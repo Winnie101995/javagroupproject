@@ -300,7 +300,7 @@ public class AsteroidsGame extends Application {
                     }
                 }
 
-//               collision detection
+//               WIP - collision detection
                 // disappear bullet when it hit
                 List<Bullet> bulletToRemove = bulletList.stream().filter(bullet -> {
                     List<Asteroids> collisions = asteroids.stream()
@@ -348,10 +348,41 @@ public class AsteroidsGame extends Application {
                     return true;
                 }).collect(Collectors.toList());
 
-//remove bullets once they have hit the asteroid
+//  bullets and aliens
+
+                List<Bullet> bulletToRemove2 = bulletList.stream().filter(bullet -> {
+                    List<AlienShip> alienShipCollisions = alienShips.stream()
+                            .filter(alienShip -> alienShip.collision(bullet))
+                            .collect(Collectors.toList());
+
+                    if(alienShipCollisions.isEmpty()){
+                        return false;
+                    }
+
+                    alienShipCollisions.stream().forEach(collided -> {
+                        alienShips.remove(alienShipCollisions);
+                        root.getChildren().remove(alienShipCollisions);
+
+                        if (alienShipCollisions instanceof AlienShip) {
+                            alienShipCollisions.remove(collided);
+                            score.addAndGet(300);
+                        }
+                        scoreText.setText("\nScore: " + score);
+                    });
+                    return true;
+                }).collect(Collectors.toList());
+
+//remove bullets once they have hit the alien ship
+                bulletToRemove2.forEach(bullet2 -> {
+                            root.getChildren().remove(bullet2.getGameCharacter());
+                            bulletList.remove(bullet2);
+                        });
+
+                //remove bullets once they have hit the asteroid
                 bulletToRemove.forEach(bullet -> {
                     root.getChildren().remove(bullet.getGameCharacter());
                     bulletList.remove(bullet);
+
 
 // Check if there are any asteroids left on the screen
 
