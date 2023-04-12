@@ -108,6 +108,7 @@ public abstract class GameCharacters {
     }
 }
 
+
     // testing implementation of this collision method.
     // Use above method instead. This method works by defining a rectangular bounding box for each GameCharacters object using the getBoundsInParent() method of the Node class. Creates rectangular boxes for testing purposes. This method is generally more efficient as less computing power needed but this is at the cost of less accuracy. This isn't an intensive game on resources so let's stick with the above.
 

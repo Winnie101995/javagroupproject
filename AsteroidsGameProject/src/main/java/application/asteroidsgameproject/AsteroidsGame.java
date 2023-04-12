@@ -11,6 +11,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
+import java.applet.AudioClip;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -195,9 +197,14 @@ public class AsteroidsGame extends Application {
                     }
                 });
 
+                //  Collision between player ship and the alien ship
 
-//                // Declare a boolean variable to keep track of whether an alien ship is present or not
-//                boolean alienShipPresent = false;
+                alienShips.forEach(alien -> {
+                    if (playership.collision(alien)) {
+                        playership.hyperJump(gameObjects);
+                    }
+                });
+
 
 
 // Spawn the alien ship if the score is divisible by 10 and there are no other alien ships present
@@ -409,6 +416,21 @@ public class AsteroidsGame extends Application {
 
         return alienShip;
     }
+
+
+    // Method for getting a list of characters capable of colliding with player ship
+//    public List<GameCharacters> getCollisionCharacters(List<GameCharacters> characters) {
+//        List<GameCharacters> collisionCharacters = new ArrayList<>();
+//        for (GameCharacters character : characters) {
+//            if (character instanceof Asteroid || character instanceof AlienShip) {
+//                collisionCharacters.add(character);
+//            }
+//        }
+//        return collisionCharacters;
+//    }
+
+
+
 
     private void playSound(String filePath) {
         try {
