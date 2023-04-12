@@ -276,6 +276,7 @@ public class AsteroidsGame extends Application {
 
 //Alien Ship moves
                 alienShips.forEach(alienShip -> alienShip.move());
+                alienShips.forEach(alienShip -> alienShip.update(1 / 60.0));
 
 
 

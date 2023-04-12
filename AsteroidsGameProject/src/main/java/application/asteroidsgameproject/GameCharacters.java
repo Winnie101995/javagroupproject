@@ -89,6 +89,7 @@ public abstract class GameCharacters {
             this.gamecharacter.setTranslateY(this.gamecharacter.getTranslateY() % AsteroidsGame.HEIGHT);
         }
     }
+
     //        this method is used to manage acceleration as the gameCharacter moves faster
     public void accelerate(double accelerationFactor) {
         double changeX = Math.cos(Math.toRadians(this.gamecharacter.getRotate()));
