@@ -25,6 +25,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.AudioInputStream;
 import java.io.File;
+import javafx.geometry.Point2D;
+
 
 //the larger game class that extends application
 public class AsteroidsGame extends Application {
@@ -37,7 +39,8 @@ public class AsteroidsGame extends Application {
 
     // collision related tests variable
     private boolean hyperJumpPressed = false;
-
+    // Declare a boolean variable to keep track of whether an alien ship is present or not
+    public boolean alienShipPresent = false;
 
     private void updateGameObjectsList(List<GameCharacters> gameObjects, AlienShip alienShip, List<Asteroids> asteroids) {
         gameObjects.clear();
@@ -88,15 +91,34 @@ public class AsteroidsGame extends Application {
         root.getChildren().add(playership.getGameCharacter());
 
 //initialising alien ship
-        AlienShip alienShip = new AlienShip (50, 50);
-        root.getChildren().add(alienShip.getGameCharacter());
+//        AlienShip alienShip = new AlienShip (rnd.nextInt(WIDTH), rnd.nextInt(HEIGHT));
+//        root.getChildren().add(alienShip.getGameCharacter());
+
+
+
+// related to alien ship implementation
+//        int frameCounter = 0;
+//        final Point2D alienShipVelocity = new Point2D(5, 0);
+
+// move the alien ship horizontally across the screen
+//        AnimationTimer alienShipMovement = new AnimationTimer() {
+//            @Override
+//            public void handle(long now) {
+//                alienShipVelocity = alienShipVelocity.normalize().multiply(5);
+//                alienShip.move();
+//            }
+//        };
+//        alienShipMovement.start();
+
+
 
 //initialising a list of asteroids
         ArrayList<Asteroids> asteroids = new ArrayList<>();
 
 //  this list relates to the hyperjumping testing
         List<GameCharacters> gameObjects = new ArrayList<>();
-        gameObjects.add(alienShip);
+
+// WIP       gameObjects.add(alienShip);
         gameObjects.addAll(asteroids);
 // need to test whether this updates / deletes the lists
 
@@ -106,13 +128,17 @@ public class AsteroidsGame extends Application {
         asteroids.add(asteroid_one);
 //        add asteroid to game window
         asteroids.forEach(asteroid -> root.getChildren().add(asteroid.getGameCharacter()));
-// initialising a list of bullests
+// initialising a list of bullets
         ArrayList<Bullet> bulletList = new ArrayList<>();
         // handles continuous inputs (as long as key is pressed)
         ArrayList<String> keyPressedList = new ArrayList<>();
 
         // handles discrete inputs (one per key press)
         ArrayList<String> keyJustPressedList = new ArrayList<>();
+
+        //WIP DM alien ship
+        List<AlienShip> alienShips = new ArrayList<>();
+
 //captures the pressed key and adds it to two ArrayLists: "keyPressedList" and "keyJustPressedList".
         mainScene.setOnKeyPressed(
                 (KeyEvent event) -> {
@@ -136,6 +162,7 @@ public class AsteroidsGame extends Application {
 
 
         AnimationTimer game = new AnimationTimer() {
+
 
             @Override
             public void handle(long now) {
@@ -169,6 +196,61 @@ public class AsteroidsGame extends Application {
                 });
 
 
+//                // Declare a boolean variable to keep track of whether an alien ship is present or not
+//                boolean alienShipPresent = false;
+
+
+// Spawn the alien ship if the score is divisible by 10 and there are no other alien ships present
+                if (score.get() > 0 && score.get() % 10 == 0 && !alienShipPresent) {
+                    AlienShip alienShip = spawnAlienShip();
+                    alienShips.add(alienShip);
+                    alienShipPresent = true;
+                    root.getChildren().add(alienShip.getGameCharacter());
+                }
+
+// Check if the alien ship has been destroyed and remove it from the list
+                Iterator<AlienShip> iterator = alienShips.iterator();
+                while (iterator.hasNext()) {
+                    AlienShip alien = iterator.next();
+                    if (!root.getChildren().contains(alien.getGameCharacter())) {
+                        iterator.remove();
+                        alienShipPresent = false;
+                    }
+                }
+
+
+//                if (score.get() % 10 == 0 && !alienShipPresent) {
+////                    List<AlienShip> alienShips = new ArrayList<>();
+//                    AlienShip alienShip = spawnAlienShip();
+//                    alienShips.add(alienShip);
+//                    root.getChildren().add(alienShip.getGameCharacter());
+//
+//                    // Set alienShipPresent to true
+//                    alienShipPresent = true;
+//                }
+//
+//// Check if the alien ship has been destroyed and set alienShipPresent to false
+//                alienShips.forEach(alien -> {
+//                    if (!alien.isAlive()) {
+//                        root.getChildren().remove(alien.getGameCharacter());
+//                        alienShips.remove(alien);
+//                        alienShipPresent = false;
+//                    }
+//                });
+
+
+                // THIS VERSION WAS SPAWNING MULTIPLE SHIPS - Spawns the enemy ship and adds it to the screen
+
+//                List<AlienShip> alienShips = new ArrayList<>();
+//                AlienShip alienShip = spawnAlienShip();
+//
+//                alienShips.add(alienShip);
+//                alienShips.forEach(alien -> {
+//                    root.getChildren().add(alien.getGameCharacter());
+//
+//                });
+
+
                 if (keyJustPressedList.contains("SPACE") ) {
                     // user can fire a bullet
                     Bullet bullet = new Bullet((int) playership.getGameCharacter().getTranslateX(), (int) playership.getGameCharacter().getTranslateY());
@@ -191,6 +273,12 @@ public class AsteroidsGame extends Application {
                 playership.move();
 //asteroids move
                 asteroids.forEach(asteroid -> asteroid.move());
+
+//Alien Ship moves
+                alienShips.forEach(alienShip -> alienShip.move());
+
+
+
 
 // getting the bullets from the bullet list ensuring they don't stay more than 5 seconds on the screen
 
@@ -225,7 +313,6 @@ public class AsteroidsGame extends Application {
                                 asteroids.add(asteroidM);
                                 root.getChildren().add(asteroidM.getGameCharacter());
                                 //  updating the collision list on every change for objects on the screen which are not the player
-                                updateGameObjectsList(gameObjects, alienShip, asteroids);
                                 asteroids.forEach(asteroid -> asteroid.move());
                                 score.addAndGet(10);
 //
@@ -236,7 +323,6 @@ public class AsteroidsGame extends Application {
                                 SmallAsteroid asteroidS = new SmallAsteroid((int) collided.getGameCharacter().getTranslateX(), (int) collided.getGameCharacter().getTranslateY());
                                 asteroids.add(asteroidS);
                                 root.getChildren().add(asteroidS.getGameCharacter());
-                                updateGameObjectsList(gameObjects, alienShip, asteroids);
                                 asteroids.forEach(asteroid -> asteroid.move());
                                 score.addAndGet(25);
 //
@@ -245,7 +331,6 @@ public class AsteroidsGame extends Application {
                             //
                         } else if (collided instanceof SmallAsteroid) {
                             asteroids.remove(collided);
-                            updateGameObjectsList(gameObjects, alienShip, asteroids);
                             score.addAndGet(100);
                         }
 
@@ -294,6 +379,9 @@ public class AsteroidsGame extends Application {
 
 
 
+
+
+
             }
 
 
@@ -304,6 +392,23 @@ public class AsteroidsGame extends Application {
         mainStage.show();
 
     }
+
+    // This should spawn the alien ship on either side of the screen, provides part of the random element of the ship's transit
+    public AlienShip spawnAlienShip() {
+        int spawnRight = WIDTH + 50;
+        int spawnLeft = WIDTH - 50;
+        int spawnLocation = new Random().nextBoolean() ? spawnRight : spawnLeft;
+
+        // The Y-Axis spawn is also random (20 - HEIGHT currently)
+        Random r = new Random();
+        int randInt = r.nextInt(HEIGHT-20) + 20;
+
+        // Create an enemy ship which spawns in the random location selected above
+        AlienShip alienShip = new AlienShip(spawnLocation, randInt);
+
+        return alienShip;
+    }
+
     private void playSound(String filePath) {
         try {
             Clip clip = AudioSystem.getClip();

@@ -11,7 +11,11 @@ public abstract class GameCharacters {
 
     private Polygon gamecharacter;
     //    instance variable represents the movement (velocity) of the game character as a Point2D object.
-    private Point2D movement;
+
+    //    DM changed movement from private to protected
+    protected Point2D movement;
+    //    private Point2D movement;
+
     //instance variable represents the time elapsed for the game character, in seconds.
     public double elapseTimeSeconds;
 
