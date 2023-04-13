@@ -113,6 +113,8 @@ public class AsteroidsGame extends Application {
         asteroids.forEach(asteroid -> root.getChildren().add(asteroid.getGameCharacter()));
 // initialising a list of bullets
         ArrayList<Bullet> bulletList = new ArrayList<>();
+        List<AlienBullet> alienBullets = new ArrayList<>();
+
         // handles continuous inputs (as long as key is pressed)
         ArrayList<String> keyPressedList = new ArrayList<>();
 
@@ -145,6 +147,8 @@ public class AsteroidsGame extends Application {
 
 
         AnimationTimer game = new AnimationTimer() {
+
+            private long AlienShotTimer = 0;
 
 
             @Override
@@ -206,38 +210,34 @@ public class AsteroidsGame extends Application {
                     }
                 }
 
-
-//                if (score.get() % 10 == 0 && !alienShipPresent) {
-////                    List<AlienShip> alienShips = new ArrayList<>();
-//                    AlienShip alienShip = spawnAlienShip();
-//                    alienShips.add(alienShip);
-//                    root.getChildren().add(alienShip.getGameCharacter());
-//
-//                    // Set alienShipPresent to true
-//                    alienShipPresent = true;
-//                }
-//
-//// Check if the alien ship has been destroyed and set alienShipPresent to false
-//                alienShips.forEach(alien -> {
-//                    if (!alien.isAlive()) {
-//                        root.getChildren().remove(alien.getGameCharacter());
-//                        alienShips.remove(alien);
-//                        alienShipPresent = false;
-//                    }
-//                });
+//                WIP BELOW
 
 
-                // THIS VERSION WAS SPAWNING MULTIPLE SHIPS - Spawns the enemy ship and adds it to the screen
+                // steps for getting the alien ship to fire bullets
+                alienShips.forEach(alien -> {
+                    if (now - AlienShotTimer >= 2000000000 && alien.isAlive()) {
+                        // Get the change in x divided by the change in y = slope formula
+                        double deltaX = (alien.getGameCharacter().getTranslateX() - playership.getGameCharacter().getTranslateX());
+                        double deltaY = (alien.getGameCharacter().getTranslateY() - playership.getGameCharacter().getTranslateY());
+                        double shootingDirection = Math.toDegrees(Math.atan2(deltaY, deltaX));
 
-//                List<AlienShip> alienShips = new ArrayList<>();
-//                AlienShip alienShip = spawnAlienShip();
-//
-//                alienShips.add(alienShip);
-//                alienShips.forEach(alien -> {
-//                    root.getChildren().add(alien.getGameCharacter());
-//
-//                });
+                        AlienBullet bullet = new AlienBullet((int) alien.getGameCharacter().getTranslateX(), (int) alien.getGameCharacter().getTranslateY());
+                        bullet.getGameCharacter().setRotate(shootingDirection);
+                        alienBullets.add(bullet);
 
+                        bullet.accelerate(0.05);
+                        bullet.setMovement(bullet.getMovement().normalize().multiply(2));
+
+                        root.getChildren().add(bullet.getGameCharacter());
+
+                        AlienShotTimer = now;
+                        alien.accelerate(0.07);
+                    }
+                });
+
+                alienBullets.forEach(bullet -> bullet.move());
+
+// WIP ABOVE
 
                 if (keyJustPressedList.contains("SPACE") ) {
                     // user can fire a bullet
@@ -277,6 +277,16 @@ public class AsteroidsGame extends Application {
                     bullet.update(1 / 60.0);
                     if (bullet.elapseTimeSeconds > 5) {
                         bulletList.remove(n);
+                        root.getChildren().remove(bullet.getGameCharacter());
+                    }
+                }
+
+                for (int n = 0; n < alienBullets.size(); n++) {
+                    Bullet bullet = alienBullets.get(n);
+                    bullet.move();
+                    bullet.update(1 / 60.0);
+                    if (bullet.elapseTimeSeconds > 5) {
+                        alienBullets.remove(n);
                         root.getChildren().remove(bullet.getGameCharacter());
                     }
                 }

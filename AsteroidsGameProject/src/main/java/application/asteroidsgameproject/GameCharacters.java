@@ -19,6 +19,9 @@ public abstract class GameCharacters {
     //instance variable represents the time elapsed for the game character, in seconds.
     public double elapseTimeSeconds;
 
+    // DM using this for alien bullets test
+    private Boolean alive;
+
 
     //This method sets the movement of an object to a new Point2D object.
     public void setMovement(Point2D newmovement){
@@ -40,6 +43,7 @@ public abstract class GameCharacters {
         this.gamecharacter.setTranslateY(y);
         elapseTimeSeconds = 0;
         this.movement = new Point2D(0, 0);
+        this.setAlive(true);
     }
 
     //this method updates the elapsed time and position of a game
@@ -57,6 +61,15 @@ public abstract class GameCharacters {
     //return gameCharacter
     public Polygon getGameCharacter() {
         return gamecharacter;
+    }
+
+    // DM needs both of these alive methods to check if the character is alive - using this for the alien bullets test
+    // Set if the character is alive
+    public final void setAlive(Boolean status) {
+        this.alive = status;
+    }
+    public Boolean isAlive() {
+        return this.alive;
     }
 
     //enables gameCharacter to turnLeft
