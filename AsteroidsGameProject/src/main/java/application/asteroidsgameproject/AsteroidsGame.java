@@ -6,9 +6,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -33,6 +35,9 @@ public class AsteroidsGame extends Application {
     public static int WIDTH;
     public static int HEIGHT;
     public static int level = 1;
+
+    // Add the 'lives' variable
+    public static AtomicInteger lives = new AtomicInteger(3);
     Random rnd = new Random();
 
     @Override
@@ -268,24 +273,79 @@ public class AsteroidsGame extends Application {
 //checking if player collides with asteroid
                 asteroids.forEach(asteroid -> {
                     if (playership.collision(asteroid)) {
-//                        stop();
-//                        System.out.println("You die!");
+                        loseLife(mainStage, root, livesText);
                     }
-
                 });
 
 
-
+// Check if the game is over
+                if (lives.get() <= 0) {
+                    gameOver(mainStage, root);
+                    stop();
+                }
             }
-
-
-
 
         };
         game.start();
         mainStage.show();
 
     }
+
+
+    // Add a method to handle player's lives
+
+    private boolean invulnerable = false;
+    private void loseLife(Stage stage, BorderPane root, Text livesText) {
+        if (!invulnerable) {
+            lives.decrementAndGet();
+            livesText.setText("\nLives: " + "❤️ ".repeat(lives.get()));
+            // Play a sound effect or perform some other action for losing a life
+            invulnerable = true;
+
+            // Set a timer for the invulnerability period
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    invulnerable = false;
+                }
+            }, 3000); // Invulnerability period of 3 seconds
+        }
+    }
+
+
+    // Add a method to display a Game Over screen when the player loses all lives
+    private void gameOver(Stage stage, BorderPane root) {
+        Text gameOverText = new Text("GAME OVER\n\nPress ENTER to restart");
+        gameOverText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
+        gameOverText.setFill(Color.WHITE);
+        gameOverText.setTextAlignment(TextAlignment.CENTER);
+        root.setCenter(gameOverText);
+
+
+        // Restart the game when the player presses the ENTER key
+        stage.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                try {
+                    restartGame(stage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    // Add a method to restart the game
+    private void restartGame(Stage stage) throws IOException {
+        // Reset the lives and level variables
+        lives.set(3);
+        level = 1;
+
+        // Call the start() method to restart the game
+        start(stage);
+    }
+
+
     private void playSound(String filePath) {
         try {
             Clip clip = AudioSystem.getClip();
