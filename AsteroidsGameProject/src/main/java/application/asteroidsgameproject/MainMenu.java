@@ -70,6 +70,13 @@ public class MainMenu extends Application {
         highScoresButton.setOnAction(e -> {
             // Show the high scores screen
             System.out.println("TODO: Show high scores screen");
+            try {
+                // Launch the game
+                HighScores_fx score = new HighScores_fx();
+                score.start(new Stage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
 
         // Create a button to view controls

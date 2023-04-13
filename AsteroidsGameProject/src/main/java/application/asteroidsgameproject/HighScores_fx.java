@@ -30,7 +30,7 @@ public class HighScores_fx extends Application {
         music();
 
         // Create the score menu screen
-        VBox scoreLayout = createScoreLayout(scoreMenu);
+        VBox scoreLayout = createHighScoreLayout(scoreMenu);
         Scene scorescene = new Scene(scoreLayout, 1200, 700);
         // Set the title of the main menu
         scoreMenu.setTitle("High Score");
@@ -59,35 +59,35 @@ public class HighScores_fx extends Application {
         Files.write(highScoresFile, highScores, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING);
     }
 
-    private VBox createScoreLayout(Stage scoreMenu) {
-        // Create the title label
-        Label scoreLabel = new Label("High Score");
-        // Set the font size of the title label
-        scoreLabel.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 60; " +
-                "-fx-font-weight: bold; -fx-font-family: 'Arial'");
-        // Create the "High Scores" button
-        Button highScoresButton = new Button("TOP Scores");
-        // Set the font size of the high scores button
-        highScoresButton.setStyle("-fx-text-fill: #000000; -fx-font-size: 36; " +
-                "-fx-font-family: 'Arial'");
-        highScoresButton.setOnAction(e -> {
-            // Create the high scores layout
-            VBox highScoresLayout = createHighScoreLayout(scoreMenu);
-            Scene highScoresScene = new Scene(highScoresLayout, 1200, 700);
-            // Set the high scores scene
-            scoreMenu.setScene(highScoresScene);
-        });
-
-        // Add the title label and buttons to the layout
-        // Add the title, play button, high scores button, and controls button to the layout
-        VBox layout = new VBox(20, scoreLabel, highScoresButton);
-        // Set the background color of the layout
-        layout.setStyle("-fx-background-color: #000000");
-        // Set the alignment of the layout to center
-        layout.setAlignment(Pos.CENTER);
-        // Return the layout
-        return layout;
-    }
+//    private VBox createScoreLayout(Stage scoreMenu) {
+//        // Create the title label
+//        Label scoreLabel = new Label("High Score");
+//        // Set the font size of the title label
+//        scoreLabel.setStyle("-fx-text-fill: #ffffff; -fx-font-size: 60; " +
+//                "-fx-font-weight: bold; -fx-font-family: 'Arial'");
+//        // Create the "High Scores" button
+//        Button highScoresButton = new Button("TOP Scores");
+//        // Set the font size of the high scores button
+//        highScoresButton.setStyle("-fx-text-fill: #000000; -fx-font-size: 36; " +
+//                "-fx-font-family: 'Arial'");
+//        highScoresButton.setOnAction(e -> {
+//            // Create the high scores layout
+//            VBox highScoresLayout = createHighScoreLayout(scoreMenu);
+//            Scene highScoresScene = new Scene(highScoresLayout, 1200, 700);
+//            // Set the high scores scene
+//            scoreMenu.setScene(highScoresScene);
+//        });
+//
+//        // Add the title label and buttons to the layout
+//        // Add the title, play button, high scores button, and controls button to the layout
+//        VBox layout = new VBox(20, scoreLabel, highScoresButton);
+//        // Set the background color of the layout
+//        layout.setStyle("-fx-background-color: #000000");
+//        // Set the alignment of the layout to center
+//        layout.setAlignment(Pos.CENTER);
+//        // Return the layout
+//        return layout;
+//    }
 
 
     private VBox createHighScoreLayout(Stage scoreMenu) {
