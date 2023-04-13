@@ -215,16 +215,19 @@ public class AsteroidsGame extends Application {
 
                 // steps for getting the alien ship to fire bullets
                 alienShips.forEach(alien -> {
+                    // staggered shooting in nanoseconds = 2000000000 is two secs
                     if (now - AlienShotTimer >= 2000000000 && alien.isAlive()) {
-                        // Get the change in x divided by the change in y = slope formula
-                        double deltaX = (alien.getGameCharacter().getTranslateX() - playership.getGameCharacter().getTranslateX());
-                        double deltaY = (alien.getGameCharacter().getTranslateY() - playership.getGameCharacter().getTranslateY());
+                        // Next three lines updated to target the playership. It gets the change in x divided by the change in y = slope formula.
+                        double deltaX = (playership.getGameCharacter().getTranslateX() - alien.getGameCharacter().getTranslateX());
+                        double deltaY = (playership.getGameCharacter().getTranslateY() - alien.getGameCharacter().getTranslateY());
                         double shootingDirection = Math.toDegrees(Math.atan2(deltaY, deltaX));
+
 
                         AlienBullet bullet = new AlienBullet((int) alien.getGameCharacter().getTranslateX(), (int) alien.getGameCharacter().getTranslateY());
                         bullet.getGameCharacter().setRotate(shootingDirection);
                         alienBullets.add(bullet);
 
+//                        this deals with alien bullet speed. adapt for harder game
                         bullet.accelerate(0.05);
                         bullet.setMovement(bullet.getMovement().normalize().multiply(2));
 
