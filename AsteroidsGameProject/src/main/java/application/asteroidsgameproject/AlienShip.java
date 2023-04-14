@@ -47,8 +47,8 @@ public class AlienShip extends GameCharacters {
         // elapsed time in seconds (you can adjust this value to change the speed of the ship)
         double elapsedTimeSeconds = 0.016;
 
-        // fixed velocity in pixels per second (you can adjust this value to change the initial speed of the ship)
-        double fixedVelocity = 200.0;
+        // fixed velocity in pixels per second (you can adjust this value to change the initial speed of the ship). 200 is a decent value for challenge
+        double fixedVelocity = 20.0;
 
         // update the position of the ship by a fixed velocity in the direction of its current rotation
         double deltaX = fixedVelocity * Math.cos(Math.toRadians(this.getGameCharacter().getRotate())) * elapsedTimeSeconds;

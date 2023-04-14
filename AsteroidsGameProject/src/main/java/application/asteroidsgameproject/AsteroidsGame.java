@@ -210,8 +210,6 @@ public class AsteroidsGame extends Application {
                     }
                 }
 
-//                WIP BELOW
-
 
                 // steps for getting the alien ship to fire bullets
                 alienShips.forEach(alien -> {
@@ -240,7 +238,6 @@ public class AsteroidsGame extends Application {
 
                 alienBullets.forEach(bullet -> bullet.move());
 
-// WIP ABOVE
 
                 if (keyJustPressedList.contains("SPACE") ) {
                     // user can fire a bullet
@@ -368,16 +365,56 @@ public class AsteroidsGame extends Application {
                 });
 
 
-//remove bullets once they have hit the alien ship
-                bulletToRemove2.forEach(bullet2 -> {
-                            root.getChildren().remove(bullet2.getGameCharacter());
-                            bulletList.remove(bullet2);
-                        });
+//DM UPDATED BELOW
 
+//remove alien bullets once they have hit player ship and incorporate player damage / hyperjump
+//                DAVID - ADD THESE SECTIONS IN PIECEMEAL AND SEE WHAT IS BREAKING THE CODE. WANT TO HYPERJUMP PLAYERSHIP ON COLLISION AND REMOVE ALIEN BULLET FROM SCREEN
+                alienBullets.forEach(bullet -> {
+                    if (playership.collision(bullet)) {
+//                        @Paul - how are we decrementing lives here?
+//                        playership.decrementLives();
+                        bullet.setAlive(false);
+                        if(bullet.isAlive() == false){
+                            root.getChildren().remove(bullet.getGameCharacter());
+                        }
+
+                        // Decrease player's health
+//                        @Paul - how can we implement this here?
+
+                        // Spawns player ship in a safe location
+                        playership.hyperJump(gameObjects);
+                    }
+                });
+
+
+                List<Bullet> alienBulletToRemove;
+                alienBulletToRemove = alienBullets.stream().filter(bullet -> {
+                    List<AlienShip> alienShipCollisions = alienShips.stream()
+                            .filter(alienShip -> alienShip.collision(bullet))
+                            .collect(Collectors.toList());
+
+                    if(alienShipCollisions.isEmpty()){
+                        return false;
+                    }
+
+                    score.addAndGet(-500);
+                    scoreText.setText("\nScore: " + score);
+                    return true;
+                }).collect(Collectors.toList());
+
+
+
+                    // DM updated above - seems to be working fine
+
+
+
+
+                // below is fine
                 //remove bullets once they have hit the asteroid
                 bulletToRemove.forEach(bullet -> {
                     root.getChildren().remove(bullet.getGameCharacter());
                     bulletList.remove(bullet);
+
 
 
 // Check if there are any asteroids left on the screen
