@@ -262,11 +262,16 @@ public class AsteroidsGame extends Application {
 //asteroids move
                 asteroids.forEach(asteroid -> asteroid.move());
 
+
+
+                //WIP BELOW
 //Alien Ship moves
-                alienShips.forEach(alienShip -> alienShip.move());
+                alienShips.forEach(alienShip -> alienShip.move(playership));
                 alienShips.forEach(alienShip -> alienShip.update(1 / 60.0));
 
 
+
+                //WIP ABOVE
 
 
 // getting the bullets from the bullet list ensuring they don't stay more than 5 seconds on the screen
@@ -383,6 +388,8 @@ public class AsteroidsGame extends Application {
 
                         // Spawns player ship in a safe location
                         playership.hyperJump(gameObjects);
+                        score.addAndGet(-500);
+                        scoreText.setText("\nScore: " + score);
                     }
                 });
 
@@ -397,8 +404,6 @@ public class AsteroidsGame extends Application {
                         return false;
                     }
 
-                    score.addAndGet(-500);
-                    scoreText.setText("\nScore: " + score);
                     return true;
                 }).collect(Collectors.toList());
 
@@ -406,10 +411,6 @@ public class AsteroidsGame extends Application {
 
                     // DM updated above - seems to be working fine
 
-
-
-
-                // below is fine
                 //remove bullets once they have hit the asteroid
                 bulletToRemove.forEach(bullet -> {
                     root.getChildren().remove(bullet.getGameCharacter());
