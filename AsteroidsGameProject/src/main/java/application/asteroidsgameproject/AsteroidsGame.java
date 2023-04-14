@@ -44,11 +44,19 @@ public class AsteroidsGame extends Application {
     // Declare a boolean variable to keep track of whether an alien ship is present or not
     public boolean alienShipPresent = false;
 
-    private void updateGameObjectsList(List<GameCharacters> gameObjects, AlienShip alienShip, List<Asteroids> asteroids) {
+
+    //WIP CURRENTLY - HYPERSPACE JUMPING TEST - can push this to end of code when working
+    private void updateGameObjectsList(List<GameCharacters> gameObjects, AlienShip alienShip, List<Asteroids> asteroids, List<Bullet> bulletList, List<AlienBullet> alienBullets) {
         gameObjects.clear();
-        gameObjects.add(alienShip);
         gameObjects.addAll(asteroids);
+        if (alienShipPresent){
+            gameObjects.add(alienShip);
+        }
+        gameObjects.addAll(bulletList);
+        gameObjects.addAll(alienBullets);
     }
+
+    // WIP CURRENTLY
 
     @Override
     public void start(Stage mainStage) throws IOException {
@@ -193,11 +201,12 @@ public class AsteroidsGame extends Application {
 // DAVID WIP - THINK I MIGHT NEED TO REMOVE THE ALIENSHIP FROM THIS LIST AS WELL ONCE THE BULLET HITS. THINK TWO LISTS MIGHT BE CAUSING THE ISSUES
 
 // Spawn the alien ship if the score is divisible by 10 and there are no other alien ships present
-                if (score.get() > 0 && score.get() % 10 == 0 && !alienShipPresent) {
+                if (score.get() != 0 && score.get() % 20 == 0 && !alienShipPresent) {
                     AlienShip alienShip = spawnAlienShip();
                     alienShips.add(alienShip);
                     alienShipPresent = true;
                     root.getChildren().add(alienShip.getGameCharacter());
+                    updateGameObjectsList(gameObjects, alienShip, asteroids, bulletList, alienBullets);
                 }
 
 // Check if the alien ship has been destroyed and remove it from the list
@@ -206,10 +215,14 @@ public class AsteroidsGame extends Application {
                     AlienShip alien = iterator.next();
                     if (!root.getChildren().contains(alien.getGameCharacter())) {
                         iterator.remove();
-                        alienShipPresent = false;
+                        updateGameObjectsList(gameObjects, alien, asteroids, bulletList, alienBullets);
+//                        alienShipPresent = false;
                     }
                 }
 
+                if (alienShips.isEmpty()){
+                    alienShipPresent = false;
+                }
 
                 // steps for getting the alien ship to fire bullets
                 alienShips.forEach(alien -> {
@@ -373,7 +386,7 @@ public class AsteroidsGame extends Application {
 //DM UPDATED BELOW
 
 //remove alien bullets once they have hit player ship and incorporate player damage / hyperjump
-//                DAVID - ADD THESE SECTIONS IN PIECEMEAL AND SEE WHAT IS BREAKING THE CODE. WANT TO HYPERJUMP PLAYERSHIP ON COLLISION AND REMOVE ALIEN BULLET FROM SCREEN
+
                 alienBullets.forEach(bullet -> {
                     if (playership.collision(bullet)) {
 //                        @Paul - how are we decrementing lives here?
