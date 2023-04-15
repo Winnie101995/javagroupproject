@@ -19,6 +19,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.FontWeight;
 import javafx.scene.paint.Color;
+import javafx.scene.layout.BorderPane;
+import java.io.IOException;
 import javafx.geometry.Insets;
 
 public class MainMenu extends Application {

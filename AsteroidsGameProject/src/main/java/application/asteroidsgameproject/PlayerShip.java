@@ -33,8 +33,8 @@ public class PlayerShip extends GameCharacters {
 
     public void hyperJump(List<GameCharacters> gameObjects) {
         // Get the current location of the game character
-        double current_x_location = this.getGameCharacter().getTranslateX();
-        double current_y_location = this.getGameCharacter().getTranslateY();
+//        double current_x_location = this.getGameCharacter().getTranslateX();
+//        double current_y_location = this.getGameCharacter().getTranslateY();
 
         // Generate a new random location for the game character
         double newRandX = Math.random() * AsteroidsGame.WIDTH;

@@ -11,9 +11,16 @@ public abstract class GameCharacters {
 
     private Polygon gamecharacter;
     //    instance variable represents the movement (velocity) of the game character as a Point2D object.
-    private Point2D movement;
+
+    //    DM changed movement from private to protected
+    protected Point2D movement;
+    //    private Point2D movement;
+
     //instance variable represents the time elapsed for the game character, in seconds.
     public double elapseTimeSeconds;
+
+    // DM using this for alien bullets test
+    private Boolean alive;
 
 
     //This method sets the movement of an object to a new Point2D object.
@@ -36,6 +43,7 @@ public abstract class GameCharacters {
         this.gamecharacter.setTranslateY(y);
         elapseTimeSeconds = 0;
         this.movement = new Point2D(0, 0);
+        this.setAlive(true);
     }
 
     //this method updates the elapsed time and position of a game
@@ -53,6 +61,15 @@ public abstract class GameCharacters {
     //return gameCharacter
     public Polygon getGameCharacter() {
         return gamecharacter;
+    }
+
+    // DM needs both of these alive methods to check if the character is alive - using this for the alien bullets test
+    // Set if the character is alive
+    public final void setAlive(Boolean status) {
+        this.alive = status;
+    }
+    public Boolean isAlive() {
+        return this.alive;
     }
 
     //enables gameCharacter to turnLeft
@@ -85,6 +102,7 @@ public abstract class GameCharacters {
             this.gamecharacter.setTranslateY(this.gamecharacter.getTranslateY() % AsteroidsGame.HEIGHT);
         }
     }
+
     //        this method is used to manage acceleration as the gameCharacter moves faster
     public void accelerate(double accelerationFactor) {
         double changeX = Math.cos(Math.toRadians(this.gamecharacter.getRotate()));
@@ -102,6 +120,7 @@ public abstract class GameCharacters {
         return collisionArea.getBoundsInLocal().getWidth() != -1;
     }
 }
+
 
     // testing implementation of this collision method.
     // Use above method instead. This method works by defining a rectangular bounding box for each GameCharacters object using the getBoundsInParent() method of the Node class. Creates rectangular boxes for testing purposes. This method is generally more efficient as less computing power needed but this is at the cost of less accuracy. This isn't an intensive game on resources so let's stick with the above.
