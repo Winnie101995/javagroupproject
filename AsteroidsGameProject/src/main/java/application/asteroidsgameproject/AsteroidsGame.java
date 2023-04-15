@@ -189,11 +189,6 @@ public class AsteroidsGame extends Application {
                 }
 
 
-
-
-            @Override
-            public void handle(long now) {
-
                 if (keyPressedList.contains("LEFT")) {
                     playership.turnLeft();
                 }
