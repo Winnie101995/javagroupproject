@@ -2,10 +2,13 @@ package application.asteroidsgameproject;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -13,7 +16,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import java.io.IOException;
+
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -26,7 +32,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.AudioInputStream;
-import java.io.File;
 
 //the larger game class that extends application
 public class AsteroidsGame extends Application {
@@ -280,7 +285,7 @@ public class AsteroidsGame extends Application {
 
 // Check if the game is over
                 if (lives.get() <= 0) {
-                    gameOver(mainStage, root);
+                    gameOver(mainStage, root, score.get());
                     stop();
                 }
             }
@@ -315,25 +320,32 @@ public class AsteroidsGame extends Application {
 
 
     // Add a method to display a Game Over screen when the player loses all lives
-    private void gameOver(Stage stage, BorderPane root) {
-        Text gameOverText = new Text("GAME OVER\n\nPress ENTER to restart");
+    private void gameOver(Stage stage, BorderPane root, int playerScore) {
+        Text gameOverText = new Text("GAME OVER\n\nEnter your name and press ENTER");
+        TextField playerNameInput = new TextField();
+        VBox gameOverBox = new VBox(gameOverText, playerNameInput);
+        gameOverBox.setAlignment(Pos.CENTER);
+        gameOverBox.setSpacing(10);
+
         gameOverText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
         gameOverText.setFill(Color.WHITE);
         gameOverText.setTextAlignment(TextAlignment.CENTER);
-        root.setCenter(gameOverText);
 
+        playerNameInput.setMaxWidth(200);
+
+        root.setCenter(gameOverBox);
 
         // Restart the game when the player presses the ENTER key
         stage.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                try {
-                    restartGame(stage);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                String playerName = playerNameInput.getText().trim();
+                if (!playerName.isEmpty()) {
+                    showHighScores(stage, playerName, playerScore);
                 }
             }
         });
     }
+
 
     // Add a method to restart the game
     private void restartGame(Stage stage) throws IOException {
@@ -356,6 +368,72 @@ public class AsteroidsGame extends Application {
             e.printStackTrace();
         }
     }
+
+    private void showHighScores(Stage stage, String playerName, int playerScore) {
+        // Define the high scores file path
+        Path highScoresFilePath = Paths.get("highscores.txt");
+
+        // Initialize the high scores list
+        List<String> highScores = new ArrayList<>();
+
+        // Read the high scores from the file
+        try (BufferedReader reader = new BufferedReader(new FileReader(highScoresFilePath.toFile()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                highScores.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Add the player's score to the list
+        highScores.add(playerName + " - " + playerScore);
+
+        // Sort the list in descending order
+        highScores.sort((s1, s2) -> Integer.compare(Integer.parseInt(s2.split(" - ")[1]), Integer.parseInt(s1.split(" - ")[1])));
+
+        // Write the updated high scores back to the file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(highScoresFilePath.toFile()))) {
+            for (String score : highScores) {
+                writer.write(score);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Create a Text object to display the high scores
+        Text highScoresText = new Text("High Scores:\n" + String.join("\n", highScores));
+        highScoresText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        highScoresText.setFill(Color.WHITE);
+        highScoresText.setTextAlignment(TextAlignment.CENTER);
+
+        // Create a restart game button
+        Button restartButton = new Button("Main Menu");
+        restartButton.setOnAction(e -> {
+            try {
+                MainMenu mainMenu = new MainMenu();
+                mainMenu.start(stage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        // Display the high scores and restart button on the screen
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: black;");
+        root.setCenter(highScoresText);
+        root.setBottom(restartButton);
+        BorderPane.setAlignment(restartButton, Pos.CENTER);
+
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        stage.setScene(scene);
+    }
+
+
+
+
+
     public static void main(String[] args){
         try {
             launch(args);
