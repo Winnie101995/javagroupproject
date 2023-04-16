@@ -1,5 +1,7 @@
 package application.asteroidsgameproject;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 
 import java.util.Random;
 
@@ -9,8 +11,15 @@ public class LargeAsteroid extends Asteroids {
 
     public LargeAsteroid(int x, int y){
         super(x, y, ASTEROID_SIZE);
-        this.getGameCharacter().setFill(Color.GREY);
-        this.getGameCharacter().setStroke(Color.WHITE);
+
+        Image image = new Image("asteroid.png");
+        ImagePattern imagePattern = new ImagePattern(image);
+
+        this.getGameCharacter().setFill(imagePattern);
+        this.getGameCharacter().setStroke(Color.BLACK);
+
+//        this.getGameCharacter().setFill(Color.GREY);
+//        this.getGameCharacter().setStroke(Color.WHITE);
 
         //sets orientation
 

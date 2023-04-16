@@ -1,4 +1,6 @@
 package application.asteroidsgameproject;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 import javafx.scene.paint.Color;
 import java.util.Random;
@@ -9,8 +11,13 @@ public class PlayerShip extends GameCharacters {
     //    PlayerShip constructor
     public PlayerShip(int x, int y) {
 
-        super(new Polygon(15.0, 0.0, -15.0, 10.0, -5.0, 0.0, -15.0, -10.0), x, y);
-        this.getGameCharacter().setFill(Color.BLUE);
+//        super(new Polygon(15.0, 0.0, -15.0, 10.0, -5.0, 0.0, -15.0, -10.0), x, y);
+
+        super(new Polygon(40.0, 0.0, 40.0, 40.0, 0, 40.0, 0.0, 0.0), x, y);
+        Image image = new Image("ship-removebg-right.png");
+        ImagePattern imagePattern = new ImagePattern(image);
+
+        this.getGameCharacter().setFill(imagePattern);
         this.getGameCharacter().setOpacity(1);
 
 
