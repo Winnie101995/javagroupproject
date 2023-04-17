@@ -463,6 +463,8 @@ public class AsteroidsGame extends Application {
                     if (asteroids.isEmpty()) {
                         // Increase the level and add more large asteroids
                         level++;
+
+                        levelText.setText("\n Level: " + level);
                         System.out.print("Level" + level);
 
 
