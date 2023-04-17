@@ -1,2 +1,3 @@
 liu - 0
+david - 0
 paul - -630
