@@ -27,7 +27,7 @@ public class ControlsScreen extends Parent {
         this.primaryStage = primaryStage;
     }
 
-    public Scene createScene() {
+    public Scene controlsScene() {
         // Get the screen dimensions
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         int screenWidth = (int) primaryScreenBounds.getWidth();

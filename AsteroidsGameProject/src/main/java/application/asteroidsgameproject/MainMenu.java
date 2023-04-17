@@ -19,9 +19,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.FontWeight;
 import javafx.scene.paint.Color;
-import javafx.scene.layout.BorderPane;
-import java.io.IOException;
-import javafx.geometry.Insets;
 
 public class MainMenu extends Application {
     public static int WIDTH;
@@ -29,13 +26,14 @@ public class MainMenu extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Get the screen dimensions
+
+        // Get the width and height of the screen
         Screen primaryScreen = Screen.getPrimary();
         Rectangle2D bounds = primaryScreen.getBounds();
         WIDTH = (int) bounds.getWidth();
         HEIGHT = (int) bounds.getHeight();
 
-        // Set the background image of the root pane
+        // Set the background image to the spaceBackground
         Image backgroundImage = new Image("/spaceBackground.png");
         BackgroundSize backgroundSize = new BackgroundSize(WIDTH, HEIGHT, true, true, true, true);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
@@ -43,13 +41,7 @@ public class MainMenu extends Application {
         // Create the main menu scene
         StackPane root = new StackPane();
         root.setBackground(new Background(background));
-
         Scene scene = new Scene(root, WIDTH, HEIGHT);
-
-        // Set the stage title
-        primaryStage.setTitle("Asteroids Game Main Menu");
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
         // Create a label for the title
         Label titleLabel = new Label("ASTEROIDS");
@@ -77,7 +69,7 @@ public class MainMenu extends Application {
 
         highScoresButton.setOnAction(e -> {
             // Show the high scores screen
-            System.out.println("TODO: Show high scores screen");
+            System.out.println("@LIU TO DO: Show high scores screen");
         });
 
         // Create a button to view controls
@@ -88,7 +80,7 @@ public class MainMenu extends Application {
         controlsButton.setOnAction(e -> {
             // Show the controls screen
             ControlsScreen controlsScreen = new ControlsScreen(scene, primaryStage);
-            Scene controlsScene = controlsScreen.createScene();
+            Scene controlsScene = controlsScreen.controlsScene();
             primaryStage.setScene(controlsScene);
         });
 
@@ -96,10 +88,10 @@ public class MainMenu extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Asteroids");
         primaryStage.show();
+
         // Add the title label and button to the main menu
         VBox mainMenuLayout = new VBox(50);
         mainMenuLayout.setAlignment(Pos.CENTER);
-        mainMenuLayout.setPadding(new Insets(0, 0, 0, 0));
         mainMenuLayout.getChildren().addAll(titleLabel,playButton, highScoresButton, controlsButton);
         root.getChildren().add(mainMenuLayout);
     }
