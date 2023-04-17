@@ -65,7 +65,10 @@ public class AsteroidsGame extends Application {
         // Initialize the score variable
         AtomicInteger score = new AtomicInteger();
         AtomicInteger lives = new AtomicInteger(3); // set initial number of lives to 3
-        final int[] newScore = {10000}; // the score needed to earn an additional life
+
+        // the score needed to earn an additional life
+        // final one element array suggested by intellij
+        final int[] newScore = {10000};
         Text scoreText = new Text();
         Text livesText = new Text("\nLives: " + "❤️ ".repeat(lives.get()));
 
@@ -76,6 +79,7 @@ public class AsteroidsGame extends Application {
         livesText.setFill(Color.WHITE);
         scoreText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         livesText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+
         VBox topBox = new VBox();
         topBox.getChildren().addAll(scoreText, livesText);
         root.setTop(topBox);
@@ -84,6 +88,7 @@ public class AsteroidsGame extends Application {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         root.setCenter(canvas);
+
 //fill screen color
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, WIDTH, HEIGHT);
@@ -207,6 +212,8 @@ public class AsteroidsGame extends Application {
                 alienShips.forEach(alien -> {
                     if (playership.collision(alien)) {
                         playership.hyperJump(gameObjects);
+                        lives.decrementAndGet();
+                        livesText.setText("\nLives: " + "❤️ ".repeat(lives.get()));
                     }
                 });
 
@@ -400,15 +407,14 @@ public class AsteroidsGame extends Application {
 
                 alienBullets.forEach(bullet -> {
                     if (playership.collision(bullet)) {
-//                        @Paul - how are we decrementing lives here?
-//                        playership.decrementLives();
                         bullet.setAlive(false);
                         if(bullet.isAlive() == false){
                             root.getChildren().remove(bullet.getGameCharacter());
+                            lives.decrementAndGet();
+                            livesText.setText("\nLives: " + "❤️ ".repeat(lives.get()));
+
                         }
 
-                        // Decrease player's health
-//                        @Paul - how can we implement this here?
 
                         // Spawns player ship in a safe location
                         playership.hyperJump(gameObjects);
