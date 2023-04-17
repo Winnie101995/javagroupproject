@@ -25,38 +25,9 @@ import javafx.scene.text.TextAlignment;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 
-import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.layout.VBox;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.sound.sampled.AudioInputStream;
 
 //the larger game class that extends application
 public class AsteroidsGame extends Application {
@@ -107,6 +78,7 @@ public class AsteroidsGame extends Application {
         // the score needed to earn an additional life
         // final one element array suggested by intellij
         final int[] newScore = {10000};
+        final int[] AlienScore = {8000};
         Text scoreText = new Text();
         Text livesText = new Text("\nLives: " + "❤️ ".repeat(lives.get()));
 
@@ -257,12 +229,13 @@ public class AsteroidsGame extends Application {
 
 
 // Spawn the alien ship if the score is divisible by 10 and there are no other alien ships present
-                if (score.get() != 0 && score.get() % 8000 == 0 && !alienShipPresent) {
+                if (score.get() >= AlienScore[0] && !alienShipPresent) {
                     AlienShip alienShip = spawnAlienShip();
                     alienShips.add(alienShip);
                     alienShipPresent = true;
                     root.getChildren().add(alienShip.getGameCharacter());
                     updateGameObjectsList(gameObjects, alienShip, asteroids, bulletList, alienBullets);
+                    AlienScore[0] += 8000;
                 }
 
 // Check if the alien ship has been destroyed and remove it from the list
