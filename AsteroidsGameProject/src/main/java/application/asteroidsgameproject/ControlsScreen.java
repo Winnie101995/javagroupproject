@@ -66,9 +66,9 @@ public class ControlsScreen extends Parent {
                 "\nColliding with them will destroy the player's ship.\n" +
                 "\n" +
                 "Destroy all asteroids and enemy ships to complete the level." +
-                "\n Large Asteroids are worth 20 points. " +
-                "\n Medium Asteroids are worth 50 points. " +
-                "\n Small Asteroids are worth 100 points.\n" +
+                "\n Large Asteroids are worth 500 points. " +
+                "\n Medium Asteroids are worth 1000 points. " +
+                "\n Small Asteroids are worth 1500 points.\n" +
                 "Alien ships are worth 300 points.\n" +
                 "\nThe player has a 3 lives. \n You can regain a life for every 10,000 points scored." +
                 " \nLosing all lives will result in a game over.\n" +

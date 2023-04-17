@@ -255,10 +255,9 @@ public class AsteroidsGame extends Application {
                     }
                 });
 
-// DAVID WIP - THINK I MIGHT NEED TO REMOVE THE ALIENSHIP FROM THIS LIST AS WELL ONCE THE BULLET HITS. THINK TWO LISTS MIGHT BE CAUSING THE ISSUES
 
 // Spawn the alien ship if the score is divisible by 10 and there are no other alien ships present
-                if (score.get() != 0 && score.get() % 20 == 0 && !alienShipPresent) {
+                if (score.get() != 0 && score.get() % 8000 == 0 && !alienShipPresent) {
                     AlienShip alienShip = spawnAlienShip();
                     alienShips.add(alienShip);
                     alienShipPresent = true;
@@ -316,7 +315,7 @@ public class AsteroidsGame extends Application {
                     bulletList.add(bullet);
 
                     bullet.accelerate(0.3); // sped up bullet speed
-                    bullet.setMovement(bullet.getMovement().normalize().multiply(3));
+                    bullet.setMovement(bullet.getMovement().normalize().multiply(10));
 
 
 
@@ -349,7 +348,7 @@ public class AsteroidsGame extends Application {
                     Bullet bullet = bulletList.get(n);
                     bullet.move();
                     bullet.update(1 / 60.0);
-                    if (bullet.elapseTimeSeconds > 5) {
+                    if (bullet.elapseTimeSeconds > 1) {
                         bulletList.remove(n);
                         root.getChildren().remove(bullet.getGameCharacter());
                     }
@@ -387,7 +386,7 @@ public class AsteroidsGame extends Application {
                                 root.getChildren().add(asteroidM.getGameCharacter());
                                 //  updating the collision list on every change for objects on the screen which are not the player
                                 asteroids.forEach(asteroid -> asteroid.move());
-                                score.addAndGet(10);
+                                score.addAndGet(500);
 //
                             }
 
@@ -397,14 +396,14 @@ public class AsteroidsGame extends Application {
                                 asteroids.add(asteroidS);
                                 root.getChildren().add(asteroidS.getGameCharacter());
                                 asteroids.forEach(asteroid -> asteroid.move());
-                                score.addAndGet(25);
+                                score.addAndGet(1000);
 //
                             }
 
                             //
                         } else if (collided instanceof SmallAsteroid) {
                             asteroids.remove(collided);
-                            score.addAndGet(100);
+                            score.addAndGet(1500);
                         }
 
                         scoreText.setText("\nScore: " + score);
@@ -509,19 +508,6 @@ public class AsteroidsGame extends Application {
 
                 });
 
-
-
-                    // Check for collision and play audio
-                    asteroids.forEach(asteroid -> {
-                        if (playership.collision(asteroid)) {
-                            // Stop the game (if necessary)
-                            // stop();
-
-
-                            // Print a message (if necessary)
-                            // System.out.println("You die!");
-                        }
-                    });
             }
         };
         game.start();
@@ -581,7 +567,7 @@ public class AsteroidsGame extends Application {
         // Create a Text object to display the high scores
         Text highScoresText = new Text("High Scores:\n" + String.join("\n", highScores));
         highScoresText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        highScoresText.setFill(Color.WHITE);
+        highScoresText.setFill(Color.BLACK);
         highScoresText.setTextAlignment(TextAlignment.CENTER);
 
         // Create a restart game button
@@ -615,7 +601,7 @@ public class AsteroidsGame extends Application {
         gameOverBox.setSpacing(10);
 
         gameOverText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
-        gameOverText.setFill(Color.BLACK);
+        gameOverText.setFill(Color.WHITE);
         gameOverText.setTextAlignment(TextAlignment.CENTER);
 
         playerNameInput.setMaxWidth(200);

@@ -11,7 +11,7 @@ public class MediumAsteroid extends Asteroids{
     private static final int ASTEROID_SIZE = 40;
     public MediumAsteroid(int x, int y){
         super(x, y, ASTEROID_SIZE);
-        this.getGameCharacter().setFill(Color.GREY);
+        this.getGameCharacter().setFill(Color.TRANSPARENT);
         this.getGameCharacter().setStroke(Color.WHITE);
         this.getGameCharacter().setStrokeWidth(2);
 

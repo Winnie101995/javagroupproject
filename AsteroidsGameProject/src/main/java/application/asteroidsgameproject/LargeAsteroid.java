@@ -9,7 +9,7 @@ public class LargeAsteroid extends Asteroids {
 
     public LargeAsteroid(int x, int y){
         super(x, y, ASTEROID_SIZE);
-        this.getGameCharacter().setFill(Color.GREY);
+        this.getGameCharacter().setFill(Color.TRANSPARENT);
         this.getGameCharacter().setStroke(Color.WHITE);
 
         //sets orientation
