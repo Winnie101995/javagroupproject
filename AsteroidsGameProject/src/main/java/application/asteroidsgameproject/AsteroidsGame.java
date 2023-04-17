@@ -25,38 +25,10 @@ import javafx.scene.text.TextAlignment;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 
-import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.layout.VBox;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.sound.sampled.AudioInputStream;
+
 
 //the larger game class that extends application
 public class AsteroidsGame extends Application {
@@ -597,7 +569,7 @@ public class AsteroidsGame extends Application {
 
         // Display the high scores and restart button on the screen
         BorderPane root = new BorderPane();
-        root.setStyle("-fx-background-color: white;");
+        root.setStyle("-fx-background-color: black;");
         root.setCenter(highScoresText);
         root.setBottom(restartButton);
         BorderPane.setAlignment(restartButton, Pos.CENTER);
@@ -638,7 +610,6 @@ public class AsteroidsGame extends Application {
     private void restartGame(Stage stage) throws IOException {
         // Reset the lives and level variables
         AtomicInteger lives = new AtomicInteger(3);
-        lives.set(3);
         level = 1;
 
         // Call the start() method to restart the game
