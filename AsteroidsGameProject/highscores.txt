@@ -1,8 +1,15 @@
 Test - 29800
+ddd - 11300
 Y - 7500
 winnie - 6500
+ddd - 6500
 dddd - 20
 dddd - 0
 ddd - 0
+ddd - 0
+ㄎㄎ - 0
+dd - 0
+ㄎㄎㄎ - 0
+sss - 0
 ddd - -380
 Twst - -980

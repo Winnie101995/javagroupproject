@@ -542,7 +542,7 @@ public class AsteroidsGame extends Application {
         // Create a Text object to display the high scores
         Text highScoresText = new Text("High Scores:\n" + String.join("\n", highScores));
         highScoresText.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        highScoresText.setFill(Color.BLACK);
+        highScoresText.setFill(Color.WHITE);
         highScoresText.setTextAlignment(TextAlignment.CENTER);
 
         // Create a restart game button
@@ -558,7 +558,7 @@ public class AsteroidsGame extends Application {
 
         // Display the high scores and restart button on the screen
         BorderPane root = new BorderPane();
-        root.setStyle("-fx-background-color: white;");
+        root.setStyle("-fx-background-color: Black;");
         root.setCenter(highScoresText);
         root.setBottom(restartButton);
         BorderPane.setAlignment(restartButton, Pos.CENTER);
