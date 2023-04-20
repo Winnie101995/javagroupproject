@@ -15,8 +15,8 @@ public class AlienShip extends GameCharacters {
     private double speed;
     public AlienShip(int x, int y) {
         super(new Polygon(-60, 0, -40, 20, 40, 20, 60, 0, 40, -20, 30, -20, 20, -35, -20, -35, -30, -20, -40, -20), x, y);
-        this.getGameCharacter().setFill(Color.GREEN);
-        this.getGameCharacter().setFill(Color.GREEN);
+        this.getGameCharacter().setFill(Color.BLACK);
+        this.getGameCharacter().setStroke(Color.WHITE);
         this.speed = 2;
 
     }
