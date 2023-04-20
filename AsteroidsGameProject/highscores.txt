@@ -1,0 +1,6 @@
+thr - 18800
+Winnie - 16300
+Winnie - 11300
+tim - 7300
+Winnie - 3300
+Test - 1000
